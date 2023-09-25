@@ -46,6 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChefLogIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChefLogIn.Designer.cs">
+      <DependentUpon>ChefLogIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChefPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChefPanel.Designer.cs">
+      <DependentUpon>ChefPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeLogIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmployeeLogIn.Designer.cs">
+      <DependentUpon>EmployeeLogIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeePanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmployeePanel.Designer.cs">
+      <DependentUpon>EmployeePanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GeneralManagerLogIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,8 +88,32 @@
     <Compile Include="ISPARK_DB Entrance.Designer.cs">
       <DependentUpon>ISPARK_DB Entrance.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManagerLogIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagerLogIn.Designer.cs">
+      <DependentUpon>ManagerLogIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManagerPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagerPanel.Designer.cs">
+      <DependentUpon>ManagerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ChefLogIn.resx">
+      <DependentUpon>ChefLogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChefPanel.resx">
+      <DependentUpon>ChefPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeeLogIn.resx">
+      <DependentUpon>EmployeeLogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeePanel.resx">
+      <DependentUpon>EmployeePanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GeneralManagerLogIn.resx">
       <DependentUpon>GeneralManagerLogIn.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,6 +122,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ISPARK_DB Entrance.resx">
       <DependentUpon>ISPARK_DB Entrance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagerLogIn.resx">
+      <DependentUpon>ManagerLogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManagerPanel.resx">
+      <DependentUpon>ManagerPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

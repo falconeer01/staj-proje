@@ -25,5 +25,23 @@ namespace proje
             GeneralManagerLogIn GML = new GeneralManagerLogIn();
             GML.Show();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ManagerLogIn MLI = new ManagerLogIn();
+            MLI.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ChefLogIn CLI = new ChefLogIn();
+            CLI.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            EmployeeLogIn ELI = new EmployeeLogIn();
+            ELI.Show();
+        }
     }
 }
