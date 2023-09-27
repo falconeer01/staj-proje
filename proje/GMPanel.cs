@@ -68,6 +68,11 @@ namespace proje
                 IDBox.Text = dataGridView1.Rows[index].Cells[0].Value.ToString();
                 textBox1.Text = dataGridView1.Rows[index].Cells[2].Value.ToString();
             }
+            else if (comboBox1.Text == "Department")
+            {
+                IDBox.Text = dataGridView1.Rows[index].Cells[0].Value.ToString();
+                textBox1.Text = dataGridView1.Rows[index].Cells[1].Value.ToString();
+            }
         }
 
         // Veri ekleme işlemleri:
@@ -298,6 +303,37 @@ namespace proje
                     }
                 }
             }
+            else if (comboBox1.Text == "Department")
+            {
+                bool hasError = false;
+
+                try
+                {
+                    conn.Open();
+
+                    SqlCommand comm = new SqlCommand("update Department set Department_Name=@p1, isUpdated=1 where Department_ID=@p3", conn);
+                    comm.Parameters.AddWithValue("@p1", textBox1.Text);
+                    comm.Parameters.AddWithValue("@p3", IDBox.Text);
+                    comm.ExecuteNonQuery();
+                }
+                catch (Exception err)
+                {
+                    hasError = true;
+                    MessageBox.Show(err.ToString());
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+
+                    if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
+                    {
+                        MessageBox.Show("You updated the related Departments data.");
+                    }
+                }
+            }
         }
 
         // Delete işlemleri:
@@ -372,6 +408,36 @@ namespace proje
                     conn.Open();
 
                     SqlCommand comm = new SqlCommand("update Employee set isActive=0, isUpdated=1 where E_Record_Number=@p1", conn);
+                    comm.Parameters.AddWithValue("@p1", IDBox.Text);
+                    comm.ExecuteNonQuery();
+                }
+                catch (Exception err)
+                {
+                    hasError = true;
+                    MessageBox.Show(err.ToString());
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+
+                    if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
+                    {
+                        MessageBox.Show("You deleted the related Employee data.");
+                    }
+                }
+            }
+            else if (comboBox1.Text == "Department")
+            {
+                bool hasError = false;
+
+                try
+                {
+                    conn.Open();
+
+                    SqlCommand comm = new SqlCommand("update Department set isActive=0, isUpdated=1 where Department_ID=@p1", conn);
                     comm.Parameters.AddWithValue("@p1", IDBox.Text);
                     comm.ExecuteNonQuery();
                 }
