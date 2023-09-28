@@ -1,0 +1,716 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ISPARK_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activity_Type">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_Name" Type="varchar" MaxLength="30" />
+          <Property Name="isUpdated" Type="bit" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="Activity_Category" Type="varchar" MaxLength="20" />
+          <Property Name="Activity_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Chef">
+          <Key>
+            <PropertyRef Name="C_Record_Number" />
+          </Key>
+          <Property Name="C_Record_Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="M_Record_Number" Type="int" />
+          <Property Name="Chef_Name" Type="varchar" MaxLength="30" />
+          <Property Name="isUpdated" Type="bit" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Department_ID" />
+          </Key>
+          <Property Name="Department_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Department_Name" Type="varchar" MaxLength="40" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="isUpdated" Type="bit" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="E_Record_Number" />
+          </Key>
+          <Property Name="E_Record_Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="C_Record_Number" Type="int" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="30" />
+          <Property Name="isUpdated" Type="bit" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="General_Manager">
+          <Key>
+            <PropertyRef Name="GM_Record_Number" />
+          </Key>
+          <Property Name="GM_Record_Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GM_Name" Type="varchar" MaxLength="20" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="isUpdated" Type="bit" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="M_Record_Number" />
+          </Key>
+          <Property Name="M_Record_Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GM_Record_Number" Type="int" />
+          <Property Name="Department_ID" Type="int" />
+          <Property Name="Manager_Name" Type="varchar" MaxLength="30" />
+          <Property Name="isUpdated" Type="bit" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Product_Activity_Date">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Product_ID" Type="int" />
+          <Property Name="Record_Number" Type="int" />
+          <Property Name="Activity_Category" Type="varchar" MaxLength="20" />
+          <Property Name="Old_Owner_Number" Type="int" />
+          <Property Name="Confirmation_Status" Type="varchar" MaxLength="1" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="isUpdated" Type="bit" />
+        </EntityType>
+        <EntityType Name="Product_Type">
+          <Key>
+            <PropertyRef Name="Category_ID" />
+          </Key>
+          <Property Name="Category_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category_Name" Type="varchar" MaxLength="30" />
+          <Property Name="isUpdated" Type="bit" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Product_ID" />
+          </Key>
+          <Property Name="Product_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category_ID" Type="int" />
+          <Property Name="Product_Name" Type="varchar" MaxLength="30" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="isUpdated" Type="bit" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Record_Number" />
+          </Key>
+          <Property Name="Record_Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Employee_Name" Type="varchar" MaxLength="25" />
+          <Property Name="isUpdated" Type="bit" />
+          <Property Name="isActive" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Chef_Manager">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <End Role="Chef" Type="Self.Chef" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="M_Record_Number" />
+            </Principal>
+            <Dependent Role="Chef">
+              <PropertyRef Name="M_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chef_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Chef" Type="Self.Chef" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Chef">
+              <PropertyRef Name="C_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Chef">
+          <End Role="Chef" Type="Self.Chef" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chef">
+              <PropertyRef Name="C_Record_Number" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="C_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="C_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_General_Manager_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="General_Manager" Type="Self.General_Manager" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="General_Manager">
+              <PropertyRef Name="GM_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manager_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Manager" Type="Self.Manager" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Department_ID" />
+            </Principal>
+            <Dependent Role="Manager">
+              <PropertyRef Name="Department_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manager_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Manager">
+              <PropertyRef Name="M_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Activity_Date_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Product_Activity_Date" Type="Self.Product_Activity_Date" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="Product_ID" />
+            </Principal>
+            <Dependent Role="Product_Activity_Date">
+              <PropertyRef Name="Product_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Activity_Date_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Product_Activity_Date" Type="Self.Product_Activity_Date" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Product_Activity_Date">
+              <PropertyRef Name="Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Product_Type">
+          <End Role="Product_Type" Type="Self.Product_Type" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_Type">
+              <PropertyRef Name="Category_ID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="Category_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ISPARK_DBModelStoreContainer">
+          <EntitySet Name="Activity_Type" EntityType="Self.Activity_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chef" EntityType="Self.Chef" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="General_Manager" EntityType="Self.General_Manager" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_Activity_Date" EntityType="Self.Product_Activity_Date" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product_Type" EntityType="Self.Product_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Chef_Manager" Association="Self.FK_Chef_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Chef" EntitySet="Chef" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chef_Users" Association="Self.FK_Chef_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Chef" EntitySet="Chef" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Chef" Association="Self.FK_Employee_Chef">
+            <End Role="Chef" EntitySet="Chef" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Users" Association="Self.FK_Employee_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_General_Manager_Users" Association="Self.FK_General_Manager_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="General_Manager" EntitySet="General_Manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manager_Department" Association="Self.FK_Manager_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Manager" EntitySet="Manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manager_Users" Association="Self.FK_Manager_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Manager" EntitySet="Manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Activity_Date_Products" Association="Self.FK_Product_Activity_Date_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_Activity_Date" EntitySet="Product_Activity_Date" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Activity_Date_Users" Association="Self.FK_Product_Activity_Date_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Product_Activity_Date" EntitySet="Product_Activity_Date" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Product_Type" Association="Self.FK_Products_Product_Type">
+            <End Role="Product_Type" EntitySet="Product_Type" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ISPARK_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activity_Type">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="Activity_Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Activity_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Chef">
+          <Key>
+            <PropertyRef Name="C_Record_Number" />
+          </Key>
+          <Property Name="C_Record_Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="M_Record_Number" Type="Int32" />
+          <Property Name="Chef_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="Manager" Relationship="Self.FK_Chef_Manager" FromRole="Chef" ToRole="Manager" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Chef_Users" FromRole="Chef" ToRole="Users" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_Chef" FromRole="Chef" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Department_ID" />
+          </Key>
+          <Property Name="Department_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Department_Name" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <NavigationProperty Name="Manager" Relationship="Self.FK_Manager_Department" FromRole="Department" ToRole="Manager" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="E_Record_Number" />
+          </Key>
+          <Property Name="E_Record_Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="C_Record_Number" Type="Int32" />
+          <Property Name="Employee_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="Chef" Relationship="Self.FK_Employee_Chef" FromRole="Employee" ToRole="Chef" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Employee_Users" FromRole="Employee" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="General_Manager">
+          <Key>
+            <PropertyRef Name="GM_Record_Number" />
+          </Key>
+          <Property Name="GM_Record_Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GM_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_General_Manager_Users" FromRole="General_Manager" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="M_Record_Number" />
+          </Key>
+          <Property Name="M_Record_Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GM_Record_Number" Type="Int32" />
+          <Property Name="Department_ID" Type="Int32" />
+          <Property Name="Manager_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="Chef" Relationship="Self.FK_Chef_Manager" FromRole="Manager" ToRole="Chef" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Manager_Department" FromRole="Manager" ToRole="Department" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Manager_Users" FromRole="Manager" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Product_Activity_Date">
+          <Key>
+            <PropertyRef Name="Activity_ID" />
+          </Key>
+          <Property Name="Activity_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Product_ID" Type="Int32" />
+          <Property Name="Record_Number" Type="Int32" />
+          <Property Name="Activity_Category" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Old_Owner_Number" Type="Int32" />
+          <Property Name="Confirmation_Status" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Activity_Date_Products" FromRole="Product_Activity_Date" ToRole="Products" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Product_Activity_Date_Users" FromRole="Product_Activity_Date" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Product_Type">
+          <Key>
+            <PropertyRef Name="Category_ID" />
+          </Key>
+          <Property Name="Category_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_Product_Type" FromRole="Product_Type" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Product_ID" />
+          </Key>
+          <Property Name="Product_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category_ID" Type="Int32" />
+          <Property Name="Product_Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <NavigationProperty Name="Product_Activity_Date" Relationship="Self.FK_Product_Activity_Date_Products" FromRole="Products" ToRole="Product_Activity_Date" />
+          <NavigationProperty Name="Product_Type" Relationship="Self.FK_Products_Product_Type" FromRole="Products" ToRole="Product_Type" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Record_Number" />
+          </Key>
+          <Property Name="Record_Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Employee_Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="isUpdated" Type="Boolean" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="Chef" Relationship="Self.FK_Chef_Users" FromRole="Users" ToRole="Chef" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_Users" FromRole="Users" ToRole="Employee" />
+          <NavigationProperty Name="General_Manager" Relationship="Self.FK_General_Manager_Users" FromRole="Users" ToRole="General_Manager" />
+          <NavigationProperty Name="Manager" Relationship="Self.FK_Manager_Users" FromRole="Users" ToRole="Manager" />
+          <NavigationProperty Name="Product_Activity_Date" Relationship="Self.FK_Product_Activity_Date_Users" FromRole="Users" ToRole="Product_Activity_Date" />
+        </EntityType>
+        <Association Name="FK_Chef_Manager">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <End Role="Chef" Type="Self.Chef" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="M_Record_Number" />
+            </Principal>
+            <Dependent Role="Chef">
+              <PropertyRef Name="M_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chef_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Chef" Type="Self.Chef" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Chef">
+              <PropertyRef Name="C_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Chef">
+          <End Role="Chef" Type="Self.Chef" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chef">
+              <PropertyRef Name="C_Record_Number" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="C_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manager_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Manager" Type="Self.Manager" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Department_ID" />
+            </Principal>
+            <Dependent Role="Manager">
+              <PropertyRef Name="Department_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="C_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_General_Manager_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="General_Manager" Type="Self.General_Manager" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="General_Manager">
+              <PropertyRef Name="GM_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manager_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Manager">
+              <PropertyRef Name="M_Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Activity_Date_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Product_Activity_Date" Type="Self.Product_Activity_Date" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="Product_ID" />
+            </Principal>
+            <Dependent Role="Product_Activity_Date">
+              <PropertyRef Name="Product_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Activity_Date_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Product_Activity_Date" Type="Self.Product_Activity_Date" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Record_Number" />
+            </Principal>
+            <Dependent Role="Product_Activity_Date">
+              <PropertyRef Name="Record_Number" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Product_Type">
+          <End Role="Product_Type" Type="Self.Product_Type" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product_Type">
+              <PropertyRef Name="Category_ID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="Category_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ISPARK_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activity_Type" EntityType="Self.Activity_Type" />
+          <EntitySet Name="Chef" EntityType="Self.Chef" />
+          <EntitySet Name="Department" EntityType="Self.Department" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="General_Manager" EntityType="Self.General_Manager" />
+          <EntitySet Name="Manager" EntityType="Self.Manager" />
+          <EntitySet Name="Product_Activity_Date" EntityType="Self.Product_Activity_Date" />
+          <EntitySet Name="Product_Type" EntityType="Self.Product_Type" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Chef_Manager" Association="Self.FK_Chef_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Chef" EntitySet="Chef" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chef_Users" Association="Self.FK_Chef_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Chef" EntitySet="Chef" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Chef" Association="Self.FK_Employee_Chef">
+            <End Role="Chef" EntitySet="Chef" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manager_Department" Association="Self.FK_Manager_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Manager" EntitySet="Manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Users" Association="Self.FK_Employee_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_General_Manager_Users" Association="Self.FK_General_Manager_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="General_Manager" EntitySet="General_Manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manager_Users" Association="Self.FK_Manager_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Manager" EntitySet="Manager" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Activity_Date_Products" Association="Self.FK_Product_Activity_Date_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Product_Activity_Date" EntitySet="Product_Activity_Date" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Activity_Date_Users" Association="Self.FK_Product_Activity_Date_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Product_Activity_Date" EntitySet="Product_Activity_Date" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Product_Type" Association="Self.FK_Products_Product_Type">
+            <End Role="Product_Type" EntitySet="Product_Type" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ISPARK_DBModelStoreContainer" CdmEntityContainer="ISPARK_DBEntities">
+          <EntitySetMapping Name="Activity_Type">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Activity_Type">
+              <MappingFragment StoreEntitySet="Activity_Type">
+                <ScalarProperty Name="Activity_Name" ColumnName="Activity_Name" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Activity_Category" ColumnName="Activity_Category" />
+                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chef">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Chef">
+              <MappingFragment StoreEntitySet="Chef">
+                <ScalarProperty Name="C_Record_Number" ColumnName="C_Record_Number" />
+                <ScalarProperty Name="M_Record_Number" ColumnName="M_Record_Number" />
+                <ScalarProperty Name="Chef_Name" ColumnName="Chef_Name" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Department">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Department_ID" ColumnName="Department_ID" />
+                <ScalarProperty Name="Department_Name" ColumnName="Department_Name" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="E_Record_Number" ColumnName="E_Record_Number" />
+                <ScalarProperty Name="C_Record_Number" ColumnName="C_Record_Number" />
+                <ScalarProperty Name="Employee_Name" ColumnName="Employee_Name" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="General_Manager">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.General_Manager">
+              <MappingFragment StoreEntitySet="General_Manager">
+                <ScalarProperty Name="GM_Record_Number" ColumnName="GM_Record_Number" />
+                <ScalarProperty Name="GM_Name" ColumnName="GM_Name" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manager">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Manager">
+              <MappingFragment StoreEntitySet="Manager">
+                <ScalarProperty Name="M_Record_Number" ColumnName="M_Record_Number" />
+                <ScalarProperty Name="GM_Record_Number" ColumnName="GM_Record_Number" />
+                <ScalarProperty Name="Department_ID" ColumnName="Department_ID" />
+                <ScalarProperty Name="Manager_Name" ColumnName="Manager_Name" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Activity_Date">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Product_Activity_Date">
+              <MappingFragment StoreEntitySet="Product_Activity_Date">
+                <ScalarProperty Name="Activity_ID" ColumnName="Activity_ID" />
+                <ScalarProperty Name="Product_ID" ColumnName="Product_ID" />
+                <ScalarProperty Name="Record_Number" ColumnName="Record_Number" />
+                <ScalarProperty Name="Activity_Category" ColumnName="Activity_Category" />
+                <ScalarProperty Name="Old_Owner_Number" ColumnName="Old_Owner_Number" />
+                <ScalarProperty Name="Confirmation_Status" ColumnName="Confirmation_Status" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Type">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Product_Type">
+              <MappingFragment StoreEntitySet="Product_Type">
+                <ScalarProperty Name="Category_ID" ColumnName="Category_ID" />
+                <ScalarProperty Name="Category_Name" ColumnName="Category_Name" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Product_ID" ColumnName="Product_ID" />
+                <ScalarProperty Name="Category_ID" ColumnName="Category_ID" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ISPARK_DBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Record_Number" ColumnName="Record_Number" />
+                <ScalarProperty Name="Employee_Name" ColumnName="Employee_Name" />
+                <ScalarProperty Name="isUpdated" ColumnName="isUpdated" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

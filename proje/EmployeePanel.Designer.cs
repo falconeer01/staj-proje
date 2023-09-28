@@ -51,12 +51,14 @@
             this.ViewBtn = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.ClearBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ClearBtn);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.Status);
             this.groupBox1.Controls.Add(this.label7);
@@ -255,7 +257,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(771, 132);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // ViewBtn
             // 
@@ -293,6 +294,17 @@
             this.label1.Size = new System.Drawing.Size(234, 18);
             this.label1.TabIndex = 26;
             this.label1.Text = "Choose the data you want to view.";
+            // 
+            // ClearBtn
+            // 
+            this.ClearBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.ClearBtn.Location = new System.Drawing.Point(6, 148);
+            this.ClearBtn.Name = "ClearBtn";
+            this.ClearBtn.Size = new System.Drawing.Size(129, 40);
+            this.ClearBtn.TabIndex = 26;
+            this.ClearBtn.Text = "Clear";
+            this.ClearBtn.UseVisualStyleBackColor = true;
+            this.ClearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
             // 
             // EmployeePanel
             // 
@@ -339,5 +351,6 @@
         private System.Windows.Forms.TextBox OldOwnNum;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox Status;
+        private System.Windows.Forms.Button ClearBtn;
     }
 }

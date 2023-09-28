@@ -33,8 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +55,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity_Type.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ADO.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADO.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ADO.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ADO.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ADO.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Chef.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
     <Compile Include="ChefLogIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +87,12 @@
     </Compile>
     <Compile Include="ChefPanel.Designer.cs">
       <DependentUpon>ChefPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Department.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
     </Compile>
     <Compile Include="EmployeeLogIn.cs">
       <SubType>Form</SubType>
@@ -76,6 +112,9 @@
     <Compile Include="GeneralManagerLogIn.Designer.cs">
       <DependentUpon>GeneralManagerLogIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="General_Manager.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
     <Compile Include="GMPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +126,9 @@
     </Compile>
     <Compile Include="ISPARK_DB Entrance.Designer.cs">
       <DependentUpon>ISPARK_DB Entrance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Manager.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
     </Compile>
     <Compile Include="ManagerLogIn.cs">
       <SubType>Form</SubType>
@@ -100,8 +142,20 @@
     <Compile Include="ManagerPanel.Designer.cs">
       <DependentUpon>ManagerPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Products.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Activity_Date.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Product_Type.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users.cs">
+      <DependentUpon>ADO.tt</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ChefLogIn.resx">
       <DependentUpon>ChefLogIn.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +192,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EntityDeploy Include="ADO.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ADO.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ADO.edmx.diagram">
+      <DependentUpon>ADO.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -150,6 +212,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ADO.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ADO.Context.cs</LastGenOutput>
+      <DependentUpon>ADO.edmx</DependentUpon>
+    </Content>
+    <Content Include="ADO.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ADO.edmx</DependentUpon>
+      <LastGenOutput>ADO.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

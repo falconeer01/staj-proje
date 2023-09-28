@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using TextBox = System.Windows.Forms.TextBox;
 
 namespace proje
 {
@@ -21,18 +22,127 @@ namespace proje
 
         SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-H1UUN1V\SQLEXPRESS;Initial Catalog=ISPARK_DB;Integrated Security=True");
 
+        //Listeleme fonksiyonu:
+        public void FuncList(string tableName)
+        {
+            SqlCommand comm = new SqlCommand($"select * from {tableName}", conn);
+            SqlDataAdapter da = new SqlDataAdapter(comm);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+        }
+
+        //Ekleme fonksiyonu:
+        public void FuncAdd(string tableName)
+        {
+            conn.Open();
+
+            string query = "";
+
+            if (tableName == "Activity_Type")
+            {
+                query = $"insert into Activity_Type (Activity_Name, Activity_Category, isActive, isUpdated) VALUES ('{NameBox.Text}', '{ActCatBox.Text}', 1, 0)";
+            }
+            else if (tableName == "Product_Activity_Date")
+            {
+                query = $"insert into Product_Activity_Date (Product_ID, Record_Number, Activity_Category, Old_Owner_Number, Confirmation_Status, isActive, isUpdated) VALUES ('{ProCatID.Text}', '{R_Num.Text}', '{ActCatBox.Text}', '{OldOwnNum.Text}', '{Status.Text}', 1, 0)";
+            }
+            else if (tableName == "Product_Type")
+            {
+                query = $"insert into Product_Type (Category_Name, isActive, isUpdated) VALUES ('{NameBox.Text}', 1, 0)";
+            }
+            else if (tableName == "Products")
+            {
+                query = $"insert into Products (Category_ID, Product_Name, isActive, isUpdated) VALUES ('{ProCatID}', '{NameBox.Text}', 1, 0)";
+            }
+
+            SqlCommand comm = new SqlCommand(query, conn);
+            comm.ExecuteNonQuery();
+
+            conn.Close();
+        }
+
+        //Update fonksiyonu:
+        public void FuncUpdate(string tableName)
+        {
+            conn.Open();
+
+            string query = "";
+            string id = IDBox.Text;
+
+            if (tableName == "Activity_Type")
+            {
+                query = $"update {tableName} set Activity_Name = '{NameBox.Text}', Activity_Category = '{ActCatBox.Text}', isUpdated = 1 where Activity_ID = {id}";
+            }
+            else if (tableName == "Product_Activity_Date")
+            {
+                query = $"update {tableName} set Product_ID = '{ProCatID.Text}', Record_Number = '{R_Num.Text}', Activity_Category = '{ActCatBox.Text}', Old_Owner_Number = '{OldOwnNum.Text}', Confirmation_Status = '{Status.Text}', isUpdated = 1 where Activity_ID = {id}";
+            }
+            else if (tableName == "Product_Type")
+            {
+                query = $"update {tableName} set Category_Name = '{NameBox.Text}', isUpdated = 1 where Category_ID = {id}";
+            }
+            else if (tableName == "Products")
+            {
+                query = $"update {tableName} set Category_ID = '{ProCatID.Text}', Product_Name = '{NameBox.Text}', isUpdated = 1 where Product_ID = {id}";
+            }
+
+            SqlCommand comm = new SqlCommand(query, conn);
+            comm.ExecuteNonQuery();
+
+            conn.Close();
+        }
+
+        //Delete fonksiyonu:
+        public void FuncDelete(string tableName)
+        {
+            conn.Open();
+
+            string query = "";
+            string id = IDBox.Text;
+
+            if (tableName == "Activity_Type")
+            {
+                query = $"update {tableName} set isActive = 0, isUpdated = 1 where Activity_ID = {id}";
+            }
+            else if (tableName == "Product_Activity_Date")
+            {
+                query = $"update {tableName} set isActive = 0, isUpdated = 1 where Activity_ID = {id}";
+            }
+            else if (tableName == "Product_Type")
+            {
+                query = $"update {tableName} set isActive = 0, isUpdated = 1 where Category_ID = {id}";
+            }
+            else if (tableName == "Products")
+            {
+                query = $"update {tableName} set isActive = 0, isUpdated = 1 where Product_ID = {id}";
+            }
+
+            SqlCommand comm = new SqlCommand(query, conn);
+            comm.ExecuteNonQuery();
+
+            conn.Close();
+        }
+
+        //Clear fonksiyonu:
+        public void FuncClear()
+        {
+            foreach (Control control in groupBox1.Controls)
+            {
+                if (control is TextBox)
+                {
+                    TextBox textBox = (TextBox)control;
+                    textBox.Text = "";
+                }
+            }
+        }
+
         //Listeleme işlemi:
         private void ListBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                conn.Open();
-
-                SqlCommand comm = new SqlCommand($"select * from {comboBox1.Text}", conn);
-                SqlDataAdapter da = new SqlDataAdapter(comm);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                dataGridView1.DataSource = dt;
+                FuncList(comboBox1.Text);
             }
             catch (Exception)
             {
@@ -44,18 +154,12 @@ namespace proje
             }
         }
 
-        //Listeleme işlemleri devamı
+        //Listeleme işlemleri devam:
         private void ViewBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                conn.Open();
-
-                SqlCommand comm = new SqlCommand($"select * from {comboBox1.Text}", conn);
-                SqlDataAdapter da = new SqlDataAdapter(comm);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                dataGridView1.DataSource = dt;
+                FuncList(comboBox1.Text);
             }
             catch (Exception)
             {
@@ -76,12 +180,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("insert into Activity_Type (Activity_Name, Activity_Category, isUpdated, isActive) values (@p1, @p2, 0, 1)", conn);
-                    comm.Parameters.AddWithValue("@p1", NameBox.Text);
-                    comm.Parameters.AddWithValue("@p2", ActCatBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncAdd("Activity_Type");
                 }
                 catch (Exception err)
                 {
@@ -90,8 +189,6 @@ namespace proje
                 }
                 finally
                 {
-                    conn.Close();
-
                     if (!hasError)
                     {
                         MessageBox.Show("You added a new Activity to the database.");
@@ -104,15 +201,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("insert into Product_Activity_Date (Product_ID, Record_Number, Activity_Category, Old_Owner_Number, Confirmation_Status, isUpdated, isActive) values (@p1, @p2, @p3, @p4, @p5, 0, 1)", conn);
-                    comm.Parameters.AddWithValue("@p1", ProCatID.Text);
-                    comm.Parameters.AddWithValue("@p2", R_Num.Text);
-                    comm.Parameters.AddWithValue("@p3", ActCatBox.Text);
-                    comm.Parameters.AddWithValue("@p4", OldOwnNum.Text);
-                    comm.Parameters.AddWithValue("@p5", Status.Text);
-                    comm.ExecuteNonQuery();
+                    FuncAdd("Product_Activity_Date");
                 }
                 catch (Exception err)
                 {
@@ -121,8 +210,6 @@ namespace proje
                 }
                 finally
                 {
-                    conn.Close();
-
                     if (!hasError)
                     {
                         MessageBox.Show("You added a new Product_Activity to the database.");
@@ -135,11 +222,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("insert into Product_Type (Category_Name, isActive, isUpdated) values (@p1, 1, 0)", conn);
-                    comm.Parameters.AddWithValue("@p1", NameBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncAdd("Product_Type");
                 }
                 catch (Exception err)
                 {
@@ -148,8 +231,6 @@ namespace proje
                 }
                 finally
                 {
-                    conn.Close();
-
                     if (!hasError)
                     {
                         MessageBox.Show("You added a new Product_Type to the database.");
@@ -162,12 +243,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("insert into Products (Category_ID, Product_Name, isActive, isUpdated) values (@p1, @p2, 1, 0)", conn);
-                    comm.Parameters.AddWithValue("@p1", ProCatID.Text);
-                    comm.Parameters.AddWithValue("@p2", NameBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncAdd("Products");
                 }
                 catch (Exception err)
                 {
@@ -176,8 +252,6 @@ namespace proje
                 }
                 finally
                 {
-                    conn.Close();
-
                     if (!hasError)
                     {
                         MessageBox.Show("You added a new Product to the database.");
@@ -195,13 +269,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("update Activity_Type set Activity_Name=@p1, Activity_Category=@p2, isUpdated=1 where Activity_ID=@p0", conn);
-                    comm.Parameters.AddWithValue("@p0", IDBox.Text);
-                    comm.Parameters.AddWithValue("@p1", NameBox.Text);
-                    comm.Parameters.AddWithValue("@p2", ActCatBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncUpdate("Activity_Type");
                 }
                 catch (Exception err)
                 {
@@ -210,11 +278,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You updated the data.");
@@ -227,16 +290,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("update Product_Activity_Date set Product_ID=@p1, Record_Number=@p2, Activity_Category=@p3, Old_Owner_Number=@p4, Confirmation_Status=@p5, isUpdated=1 where Activity_ID=@p0", conn);
-                    comm.Parameters.AddWithValue("@p0", IDBox.Text);
-                    comm.Parameters.AddWithValue("@p1", ProCatID.Text);
-                    comm.Parameters.AddWithValue("@p2", R_Num.Text);
-                    comm.Parameters.AddWithValue("@p3", ActCatBox.Text);
-                    comm.Parameters.AddWithValue("@p4", OldOwnNum.Text);
-                    comm.Parameters.AddWithValue("@p5", Status.Text);
-                    comm.ExecuteNonQuery();
+                    FuncUpdate("Product_Activity_Date");
                 }
                 catch (Exception err)
                 {
@@ -245,11 +299,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You updated the data.");
@@ -262,10 +311,7 @@ namespace proje
 
                 try
                 {
-                    SqlCommand comm = new SqlCommand("update Product_Type set Category_Name=@p1, isUpdated=1 where Category_ID=@p0", conn);
-                    comm.Parameters.AddWithValue("@p0", IDBox.Text);
-                    comm.Parameters.AddWithValue("@p1", NameBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncUpdate("Product_Type");
                 }
                 catch (Exception err)
                 {
@@ -274,11 +320,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You updated the data.");
@@ -291,11 +332,7 @@ namespace proje
 
                 try
                 {
-                    SqlCommand comm = new SqlCommand("update Products set Category_ID=@p1, Product_Name=@p2, isUpdated=1 where Product_ID=@p0", conn);
-                    comm.Parameters.AddWithValue("@p0", IDBox.Text);
-                    comm.Parameters.AddWithValue("@p1", ProCatID.Text);
-                    comm.Parameters.AddWithValue("@p2", NameBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncUpdate("Products");
                 }
                 catch (Exception err)
                 {
@@ -304,11 +341,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You updated the data.");
@@ -373,11 +405,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("update Activity_Type set isActive=0, isUpdated=1 where Activity_ID=@p1", conn);
-                    comm.Parameters.AddWithValue("@p1", IDBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncDelete("Activity_Type");
                 }
                 catch (Exception err)
                 {
@@ -386,11 +414,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You deleted the data.");
@@ -403,11 +426,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("update Product_Activity_Date set isActive=0, isUpdated=1 where Activity_ID=@p1", conn);
-                    comm.Parameters.AddWithValue("@p1", IDBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncDelete("Product_Activity_Date");
                 }
                 catch (Exception err)
                 {
@@ -416,11 +435,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You deleted the data.");
@@ -433,11 +447,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("update Product_Type set isActive=0, isUpdated=1 where Category_ID=@p1", conn);
-                    comm.Parameters.AddWithValue("@p1", IDBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncDelete("Product_Type");
                 }
                 catch (Exception err)
                 {
@@ -446,11 +456,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You deleted the data.");
@@ -463,11 +468,7 @@ namespace proje
 
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand comm = new SqlCommand("update Products set isActive=0, isUpdated=1 where Product_ID=@p1", conn);
-                    comm.Parameters.AddWithValue("@p1", IDBox.Text);
-                    comm.ExecuteNonQuery();
+                    FuncDelete("Products");
                 }
                 catch (Exception err)
                 {
@@ -476,11 +477,6 @@ namespace proje
                 }
                 finally
                 {
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        conn.Close();
-                    }
-
                     if (!hasError && !string.IsNullOrEmpty(IDBox.Text))
                     {
                         MessageBox.Show("You deleted the data.");
@@ -489,9 +485,9 @@ namespace proje
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void ClearBtn_Click(object sender, EventArgs e)
         {
-
+            FuncClear();
         }
     }
 }
