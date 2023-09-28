@@ -137,6 +137,7 @@ namespace proje
             conn.Close();
         }
 
+        //Clear fonksiyonu:
         public void FuncClear()
         {
             foreach (Control control in groupBox1.Controls)
@@ -145,6 +146,7 @@ namespace proje
                 {
                     TextBox textBox = (TextBox)control;
                     textBox.Text = "";
+                    IDBox.Text = "";
                 }
             }
         }

@@ -133,6 +133,7 @@ namespace proje
                 {
                     TextBox textBox = (TextBox)control;
                     textBox.Text = "";
+                    IDBox.Text = "";
                 }
             }
         }
