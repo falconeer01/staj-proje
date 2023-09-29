@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Button = System.Windows.Forms.Button;
+using ComboBox = System.Windows.Forms.ComboBox;
 using TextBox = System.Windows.Forms.TextBox;
 
 namespace proje
@@ -20,6 +22,24 @@ namespace proje
         public GMPanel()
         {
             InitializeComponent();
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    ButtonHoverHelper.AttachHoverEffect(button);
+                }
+            }
+
+            foreach (Control control in groupBox1.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    ButtonHoverHelper.AttachHoverEffect(button);
+                }
+            }
         }
 
         ISPARK_DBEntities db = new ISPARK_DBEntities();
@@ -713,6 +733,41 @@ namespace proje
         private void ClearBtn_Click(object sender, EventArgs e)
         {
             FuncClear();
+        }
+
+        private void GMPanel_Load(object sender, EventArgs e)
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.BackColor = Color.FromArgb(255, 218, 0);
+                    button.ForeColor = Color.FromArgb(0, 94, 161);
+                }
+
+                if (control is ComboBox)
+                {
+                    ComboBox comboBox = (ComboBox)control;
+                    comboBox.ForeColor = Color.FromArgb(15, 15, 15);
+                }
+            }
+
+            foreach (Control control in groupBox1.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.BackColor = Color.FromArgb(255, 218, 0);
+                    button.ForeColor = Color.FromArgb(0, 94, 161);
+                }
+
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.ForeColor = Color.FromArgb(15, 15, 15);
+                }
+            }
         }
     }
 }

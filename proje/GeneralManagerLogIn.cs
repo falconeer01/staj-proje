@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace proje
 {
@@ -16,13 +17,27 @@ namespace proje
         public GeneralManagerLogIn()
         {
             InitializeComponent();
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    ButtonHoverHelper.AttachHoverEffect(button);
+                }
+            }
         }
 
         SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-H1UUN1V\SQLEXPRESS;Initial Catalog=ISPARK_DB;Integrated Security=True");
 
         private void GeneralManagerLogIn_Load(object sender, EventArgs e)
         {
-
+            panel1.BackColor = Color.FromArgb(255, 218, 0);
+            label1.ForeColor = Color.FromArgb(15, 15, 15);
+            label2.ForeColor = Color.FromArgb(15, 15, 15);
+            button1.ForeColor = Color.FromArgb(0, 94, 161);
+            button1.BackColor = Color.FromArgb(255, 218, 0);
+            button1.FlatAppearance.BorderColor = Color.FromArgb(255, 218, 0);
         }
 
         private void button1_Click(object sender, EventArgs e)

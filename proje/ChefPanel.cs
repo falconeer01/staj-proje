@@ -16,6 +16,24 @@ namespace proje
         public ChefPanel()
         {
             InitializeComponent();
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    ButtonHoverHelper.AttachHoverEffect(button);
+                }
+            }
+
+            foreach (Control control in groupBox1.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    ButtonHoverHelper.AttachHoverEffect(button);
+                }
+            }
         }
 
         SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-H1UUN1V\SQLEXPRESS;Initial Catalog=ISPARK_DB;Integrated Security=True");
@@ -228,6 +246,41 @@ namespace proje
         private void ClearBtn_Click(object sender, EventArgs e)
         {
             FuncClear();
+        }
+
+        private void ChefPanel_Load(object sender, EventArgs e)
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.BackColor = Color.FromArgb(255, 218, 0);
+                    button.ForeColor = Color.FromArgb(0, 94, 161);
+                }
+
+                if (control is ComboBox)
+                {
+                    ComboBox comboBox = (ComboBox)control;
+                    comboBox.ForeColor = Color.FromArgb(15, 15, 15);
+                }
+            }
+
+            foreach (Control control in groupBox1.Controls)
+            {
+                if (control is Button)
+                {
+                    Button button = (Button)control;
+                    button.BackColor = Color.FromArgb(255, 218, 0);
+                    button.ForeColor = Color.FromArgb(0, 94, 161);
+                }
+
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.ForeColor = Color.FromArgb(15, 15, 15);
+                }
+            }
         }
     }
 }
